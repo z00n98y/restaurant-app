@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button icon="caret-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Shopping Cart</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ng-container *ngIf="shoppingCart">
+  
+  <ion-content class="ion-padding">
+    <div class="payment-element">
+      <p>You currently have {{shoppingCart.getTotalItems()}} items in your cart.</p>
+    <ion-grid>
+      <ion-row class="table-rows">
+        <ion-col><ion-label color="tertiary"> Product </ion-label></ion-col>
+        <ion-col><ion-label color="tertiary"> Quantity </ion-label></ion-col>
+        <ion-col></ion-col>
+      </ion-row>
+      <ion-row class="table-rows" *ngFor="let item of shoppingCart.items">
+        <ion-col>{{item.product.data.title}}</ion-col>
+        <ion-col>{{item.quantity}}</ion-col>
+        <ion-col>{{item.getProductPrice() | currency: 'AUD': true}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col></ion-col>
+        <ion-col><ion-label color="tertiary">{{shoppingCart.getTotalPrice() | currency: 'AUD':
+            true}}</ion-label></ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button routerLink="/checkout" shape="round">
+      <ion-icon name="checkmark-circle"></ion-icon>
+      Checkout
+    </ion-button>
+
+    </div> 
+  </ion-content>
+</ng-container>

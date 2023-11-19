@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button icon="caret-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Checkout</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-justify-content-center">
+  <div class="payment-element">
+    <div>Payment details:
+      <div class="card-area">
+        <div id="card-number" class="field"></div>
+        <div id="card-cvc" class="field"></div>
+        <div id="card-expiry" class="field"></div>
+      </div>
+    </div>
+  
+  
+    <ion-button [disabled]="!appUser || appUser.userRole !== 'admin'" (click)="pay()" [color]="paymentStatus.color" shape="round">
+      <ion-icon name="checkmark-circle"></ion-icon>
+      {{paymentStatus.text}}
+    </ion-button>
+  </div>
+  
+
+
+  <!--<div [formGroup]="stripeTest">
+    <input formControlName="name" />
+    <input formControlName="amount" />
+    <ngx-stripe-card
+      [options]="cardOptions"
+      [elementsOptions]="elementsOptions"
+    ></ngx-stripe-card>
+    
+    <button type="submit" (click)="pay()">
+      PAY
+    </button>
+  </div>
+    -->
+
+</ion-content>
