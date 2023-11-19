@@ -1,0 +1,22 @@
+
+
+.products-table {
+    display: block;
+    padding: 10%;
+    text-align: left;
+}
+
+
+.payment-element{
+    display: block;
+    width: 70%;
+    margin: auto;
+}
+
+@media(max-width: 768px) { 
+    .payment-element{
+        display: block;
+        width: 100%;
+        margin: auto;
+    }
+}

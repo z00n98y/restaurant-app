@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button icon="caret-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Products List</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="payment-element">
+    <ion-button routerLink="/admin/products/new" color="warning" shape="round">
+      <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      Add product
+    </ion-button>
+    <ion-grid>
+      <ion-text color="primary">
+        <ion-row>
+        <ion-col>Title</ion-col>
+        <ion-col>Price (AUD)</ion-col>
+        <ion-col></ion-col>
+      </ion-row>
+      </ion-text>
+      
+      <ion-row  class="ion-align-items-center" *ngFor="let p of productsFiltered">
+        <ion-col>{{p.data.title}}</ion-col>
+        <ion-col>{{p.data.price}}</ion-col>
+        <ion-col><a [routerLink]="['/admin/products/', p.key]">Edit</a></ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+  </div>
+
+</ion-content>

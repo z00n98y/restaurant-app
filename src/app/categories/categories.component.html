@@ -1,0 +1,15 @@
+
+<ion-item [color]="(!category) ? 'secondary': ''" routerLink="/">
+  <ion-icon name="cafe-outline"></ion-icon>
+  <ion-label> All Categories</ion-label>
+</ion-item>
+<ion-list *ngFor="let c of categories$ | async">
+<ion-item routerLink="/" [queryParams]="{ category: c.key}" [color]="(category === c.key) ? 'secondary': ''">
+  <ion-icon [name]="c.payload.val().icon"></ion-icon>
+  <ion-label> {{c.payload.val().name}}</ion-label>
+</ion-item>
+</ion-list>
+<ion-item *ngIf="appUser && appUser.userRole==='admin'" routerLink="admin/products">
+<ion-icon name="list-circle-outline"></ion-icon>
+<ion-label> Products</ion-label>
+</ion-item>

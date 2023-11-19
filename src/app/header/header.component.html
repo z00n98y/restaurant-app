@@ -1,0 +1,110 @@
+<ion-menu contentId="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menu Content</ion-title>
+
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <categories [category]="category"></categories>
+
+  </ion-content>
+</ion-menu>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+
+      <ion-buttons slot="secondary">
+        <ion-badge color="warning" slot="start">{{totalItems}}</ion-badge>
+        <ion-button routerLink="/shopping-cart">
+          <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="secondary">
+        <ion-button id="hover-trigger">
+          <ion-icon slot="icon-only" name="person-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Product Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!--
+  <ion-header>
+    <ion-toolbar class="header" color="primary">
+      <ion-row class="padding ion-align-items-center">
+        <ion-col size="2" class="ion-align-items-center">
+          <ion-icon name="logo-ionic" color="warning" size="large"></ion-icon>
+        </ion-col>
+        <ion-col size="8" class="ion-text-right">
+
+        </ion-col>
+        <ion-col size="1" class="ion-text-right">
+          <ion-button routerLink="/shopping-cart">
+            <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+          </ion-button>
+          <ion-badge color="warning" slot="start">{{totalItems}}</ion-badge>
+        </ion-col>
+        <ion-col size="1" class="ion-text-right">
+
+          <ion-button id="hover-trigger">
+            <ion-icon slot="icon-only" name="person-circle"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+    </ion-toolbar>
+  </ion-header>
+  -->
+
+
+
+  <ion-popover trigger="hover-trigger" triggerAction="click">
+    <ng-template>
+      <ion-list *ngIf="appUser" id="hover-trigger">
+        <ion-item slot="secondary">
+          <ion-label> Welcome {{ appUser.name}}</ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="!appUser" id="hover-trigger">
+        <ion-item routerLink="login" slot="secondary">
+          <ion-icon name="log-in-outline"></ion-icon>
+          <ion-label> Login</ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-list *ngIf="appUser" id="hover-trigger">
+        <ion-item button (click)="logout()" slot="secondary">
+          <ion-icon name="log-out-outline"></ion-icon>
+          <ion-label> Logout</ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-list *ngIf="appUser && appUser.userRole==='admin'" id="hover-trigger">
+        <ion-item button routerLink="admin/dashboard" slot="secondary">
+          <ion-icon name="clipboard-outline"></ion-icon>
+          <ion-label> Dashboard</ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-template>
+  </ion-popover>
+
+
+  <ion-content class="ion-padding">
+
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" size-sm="6" size-md="4" size-lg="3" size-xl="2" *ngFor="let p of productsFiltered">
+          <ion-card>
+            <product-card *ngIf="shoppingCart" [product]="p" [shopping-cart]="shoppingCart"></product-card>
+      
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+    
+    
+  </ion-content>
+</div>

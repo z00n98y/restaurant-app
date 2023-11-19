@@ -1,0 +1,41 @@
+
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button icon="caret-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Dashboard</ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="payment-element">
+    <ion-grid>
+      <ion-text color="primary">
+        <ion-row>
+          <ion-col>Name</ion-col>
+          <ion-col>Email</ion-col>
+          <ion-col>Role</ion-col>
+        </ion-row>
+      </ion-text>
+        <ion-row class="ion-align-items-center" *ngFor="let user of users">
+            <ion-col>{{user.data.name}}</ion-col>
+            <ion-col>{{user.data.email}}</ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-select (ionChange)="changeRow($event, user)"
+                            [(ngModel)]="user.data.userRole"
+                            label="Assign a role" 
+                            label-placement="stacked">
+                  <ion-select-option value="admin">Admin</ion-select-option>
+                  <ion-select-option value="user">User</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+        </ion-row> 
+      </ion-grid>
+  </div>
+
+</ion-content>

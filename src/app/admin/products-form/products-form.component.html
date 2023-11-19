@@ -1,0 +1,123 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button icon="caret-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{product.title}}</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #f="ngForm">
+    <div class="product-element">
+      <div class="form-group">
+        <ion-item>
+          <ion-input class="text-style" #title="ngModel" [(ngModel)]="product.title" name="title" id="title" type="text"
+            class="form-control" required placeholder="Enter text">
+            <div slot="label">Title: <ion-text color="danger">(Required)</ion-text></div>
+          </ion-input>
+        </ion-item>
+      </div>
+
+
+      <div class="form-group">
+        <div class="input-group">
+          <ion-item>
+            <ion-input #price="ngModel" [(ngModel)]="product.price" name="price" id="price" min="0" type="number"
+              class="form-control" required type="number" placeholder="0">
+              <div slot="label">Price (AUD): <ion-text color="danger">(Required)</ion-text></div>
+            </ion-input>
+          </ion-item>
+        </div>
+      </div>
+      <div class="form-group">
+        <ion-item>
+          <ion-select #category="ngModel" [(ngModel)]="product.category" name="category" id="category"
+            class="form-control" label="Categories" label-placement="stacked">
+            <ion-select-option *ngFor="let c of categories$ | async;" [value]="c.key">{{ c.data.name
+              }}</ion-select-option>
+
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="form-group">
+        <ion-item>
+          <input type="file" (change)="selectFile($event)" label="Select">
+          <ion-button (click)="upload()" expand="block" color="tertiary">
+            <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+            Upload
+          </ion-button>
+        </ion-item>
+        <ion-item>
+          <br>
+          <ion-input #imageUrl="ngModel" [(ngModel)]="product.imageUrl" name="imageUrl" id="imageUrl" type="url"
+            class="form-control" required placeholder="Enter URL">
+            <div slot="label">Enter image URL: <ion-text color="danger">(Required)</ion-text></div>
+          </ion-input>
+        </ion-item>
+      </div>
+      <img [src]="product.imageUrl" class="card-img-top" *ngIf="product.imageUrl">
+
+      <br>
+      <ion-button (click)="save(f.value)" type="button" shape="round">Save</ion-button>
+    </div>
+
+  </form>
+</ion-content>
+
+<!--
+<div class="row">
+  <div class="text-style col-md-6">
+
+    <form #f="ngForm">
+      <div class="form-group">
+        <ion-item>
+          <ion-input class="text-style" #title="ngModel" [(ngModel)]="product.title" name="title" id="title" type="text"
+            class="form-control" required placeholder="Enter text">
+            <div slot="label">Title: <ion-text color="danger">(Required)</ion-text></div>
+          </ion-input>
+        </ion-item>
+      </div>
+
+
+      <div class="form-group">
+        <div class="input-group">
+          <ion-item>
+            <ion-input #price="ngModel" [(ngModel)]="product.price" name="price" id="price" min="0" type="number"
+              class="form-control" required type="number" placeholder="0">
+              <div slot="label">Price (AUD): <ion-text color="danger">(Required)</ion-text></div>
+            </ion-input>
+          </ion-item>
+        </div>
+      </div>
+      <div class="form-group">
+        <ion-item>
+          <ion-select #category="ngModel" [(ngModel)]="product.category" name="category" id="category"
+            class="form-control" label="Stacked label" label-placement="stacked">
+            <ion-select-option *ngFor="let c of categories$ | async;" [value]="c.key">{{ c.data.name
+              }}</ion-select-option>
+
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="form-group">
+        <ion-item>
+          <ion-input #imageUrl="ngModel" [(ngModel)]="product.imageUrl" name="imageUrl" id="imageUrl" type="url" class="form-control" required
+             placeholder="Enter URL">
+            <div slot="label">Enter image URL: <ion-text color="danger">(Required)</ion-text></div>
+          </ion-input>
+        </ion-item>
+      </div>
+      <img [src]="product.imageUrl" class="card-img-top" *ngIf="product.imageUrl">
+        
+      <br>
+      <ion-button (click)="save(f.value)" type="button" shape="round">Save</ion-button>
+    </form>
+  </div>
+
+
+</div>
+-->
