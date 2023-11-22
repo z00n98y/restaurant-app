@@ -1,0 +1,12 @@
+
+.login-element {
+    display: block;
+    width: 70%;
+    margin: auto;
+}
+
+@media(max-width: 768px) { 
+    .login-element{
+        width: 100%;
+    }
+}

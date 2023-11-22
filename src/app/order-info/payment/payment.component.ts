@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
-import { StripeService } from 'ngx-stripe';
+import { StripeCardNumberComponent, StripeService } from 'ngx-stripe';
 import {
   StripeElements,
   StripeElementsOptions,
@@ -12,13 +12,16 @@ import {
   StripeCardCvcElement,
   StripeCardCvcElementOptions,
   StripeCardExpiryElement,
+  StripeCardElementOptions,
 } from '@stripe/stripe-js';
-import { CardProperties } from '../models/properties';
+import { CardProperties } from '../../models/properties';
 import { Observable, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { AppUser } from '../models/app-user';
-import { AuthService } from '../services/auth.service';
+import { AppUser } from '../../models/app-user';
+import { AuthService } from '../../services/auth.service';
+import { Delivery } from 'src/app/models/delivery-info';
+import { ResourceDataService } from 'src/app/services/resource-data.service';
 
 const status = {
   success: {
@@ -38,39 +41,41 @@ const status = {
   styleUrls: ['./payment.component.scss'],
 })
 export class PaymentComponent implements OnInit {
-  // @ViewChild(StripeCardComponent) card: StripeCardComponent;
-  // cardOptions: StripeCardElementOptions = CardProperties.standardStandardOptions;
-  appUser: AppUser|null;
-  
+  @ViewChild(StripeCardNumberComponent) card: StripeCardNumberComponent;
+
+  appUser: AppUser | null;
+  deliveryInformation: Delivery = {
+    name: "",
+    streetName: "",
+    streetNumber: "",
+    postalCode: "",
+    city: " Perth (WA)"
+  }
+
   cartId: string = "";
   paymentStatus = status.default;
 
-  cardNumberOptions: StripeCardNumberElementOptions = CardProperties.standardCardNumberOptions;
-  cardStandardOptions: StripeCardCvcElementOptions = CardProperties.standardStandardOptions;
+  cardOptions: StripeCardElementOptions = CardProperties.standardCardNumberOptions;
 
-  elements: StripeElements;
-  // card1: StripeCardElement;
-  cardNumber: StripeCardNumberElement;
-  cardCvc: StripeCardCvcElement;
-  cardExpiryDate: StripeCardExpiryElement;
 
   elementsOptions: StripeElementsOptions = {
     locale: 'en'
   };
 
   stripeTest: FormGroup;
-  constructor(private router: Router, 
+  constructor(private router: Router,
     private http: HttpClient,
     private fb: FormBuilder,
     private stripeService: StripeService,
-    public auth: AuthService) {
+    public auth: AuthService,
+    private resourceService: ResourceDataService) {
 
     // Get cart id
     this.cartId = localStorage.getItem('cartId');
     this.auth.appUser$().subscribe(value => {
       this.appUser = value;
     });
-    
+
   }
 
 
@@ -79,26 +84,9 @@ export class PaymentComponent implements OnInit {
       name: ['Angular v10', [Validators.required]],
       amount: [1000, [Validators.required, Validators.pattern(/\d+/)]],
     });
-
-    this.stripeService.elements(this.elementsOptions)
-      .subscribe(elements => {
-        this.elements = elements;
-        // Only mount the element the first time
-        if (!this.cardNumber || !this.cardCvc || !this.cardExpiryDate) {
-          // this.card = this.elements.create('card', this.cardOptions);
-          // this.card.mount('#card-element');
-          this.cardNumber = this.elements.create('cardNumber', this.cardNumberOptions);
-          this.cardNumber.mount('#card-number');
-          this.cardCvc = this.elements.create('cardCvc', this.cardStandardOptions);
-          this.cardCvc.mount('#card-cvc');
-          this.cardExpiryDate = this.elements.create('cardExpiry', this.cardStandardOptions);
-          this.cardExpiryDate.mount('#card-expiry');
-        }
-      });
-
   }
 
-  pay(): void {
+  pay(deliveryInfo: any): void {
 
     if (this.stripeTest.valid) {
       this.createPaymentIntent()
@@ -106,7 +94,7 @@ export class PaymentComponent implements OnInit {
           switchMap((pi) =>
             this.stripeService.confirmCardPayment(pi.client_secret, {
               payment_method: {
-                card: this.cardNumber,
+                card: this.card.element,
                 billing_details: {
                   name: this.stripeTest.get('name').value,
                 },
@@ -123,13 +111,21 @@ export class PaymentComponent implements OnInit {
             if (result.paymentIntent.status === 'succeeded') {
               // Show a success message to your customer
               this.paymentStatus = status.success;
+              this.resourceService.create('orders', 
+              { 
+                cartId: localStorage.getItem("cartId"),
+                deliveryInfo: deliveryInfo,
+                date: new Date().getTime(),
+                paymentStatus: 'paid'
+              })
+
               localStorage.removeItem("cartId");
-              setTimeout(() => {        
+              setTimeout(() => {
                 this.router.navigate(['/']).then(() => {
                   window.location.reload();
                 });
-              }, 2000);
-              
+              }, 3000);
+
             }
           }
         });

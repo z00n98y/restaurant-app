@@ -26,8 +26,11 @@ export class AuthService {
     localStorage.setItem('returnUrl', returnUrl)
 
     this.afAuth.signInWithPopup(new fireAuth.GoogleAuthProvider());
-
-    this.router.navigateByUrl(returnUrl);
+    this.user$.subscribe(value => {
+      if (value) this.userService.save(value);
+      
+      this.router.navigateByUrl(returnUrl);
+    })
   }
 
   logout() {

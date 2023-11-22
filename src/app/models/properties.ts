@@ -3,7 +3,7 @@ import { environment } from "src/environments/environment"
 
 export class CardProperties {
 
-    public static standardStandardOptions = {
+    public static standardCardOptions = {
         style: environment.stripeStyle
     }
 

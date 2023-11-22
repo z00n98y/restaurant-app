@@ -1,0 +1,15 @@
+
+
+<img alt="Silhouette of mountains" [src]="product.data.imageUrl" />
+<ion-card-header>
+  <ion-card-title>{{ product.data.title }}</ion-card-title>
+  <ion-card-subtitle>PKR: {{ product.data.price }} </ion-card-subtitle>
+</ion-card-header>
+
+<ion-button  *ngIf="getQuantity()===0; else updateQuantity" expand="block" (click)="addToCart()">
+  <ion-label>Add to cart</ion-label>
+</ion-button>
+
+<ng-template #updateQuantity>
+  <modify-quantity [product]="product" [shopping-cart]="shoppingCart"></modify-quantity>
+</ng-template>

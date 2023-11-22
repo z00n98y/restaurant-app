@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button icon="caret-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Orders</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-justify-content-center">
+
+  <div class="style-element">
+    <ion-text color="success">
+      <h1>Orders overview page:</h1>
+    </ion-text>
+    <ion-accordion-group [multiple]="true" *ngFor="let order of orders">
+      <ion-accordion value="first">
+        <ion-item slot="header" color="light">
+          <ion-row>
+            <ion-text color="primary">
+              <ion-col>{{order.data.date | date:'medium' }}</ion-col>
+            </ion-text>
+            <ion-col></ion-col>
+            <ion-text>
+              <ion-col>{{order.data.deliveryInfo.name}}, {{order.data.deliveryInfo.streetName}}</ion-col>
+            </ion-text>
+            <ion-col></ion-col>
+          </ion-row>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-text color="primary">
+            <ion-row>
+              <ion-col>Time</ion-col>
+              <ion-col>Cart</ion-col>
+              <ion-col>Customer Info</ion-col>
+              <ion-col>Payment status</ion-col>
+            </ion-row>
+          </ion-text>
+          <ion-row class="ion-align-items-center">
+            <ion-col>{{order.data.date | date:'medium' }}</ion-col>
+            <ion-col>
+              <ion-list class="order-info">
+                <ion-item *ngFor="let item of order.data.cart">
+                  <ion-label>{{item.quantity }} x {{item.product.data.title }}
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+            <ion-col>
+              <ion-list class="billing-info">
+                <ion-item>
+                  <ion-label>{{order.data.deliveryInfo.name}}</ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>{{order.data.deliveryInfo.streetNumber}}, {{order.data.deliveryInfo.streetName}} <br>
+                    {{order.data.deliveryInfo.postalCode}}, {{order.data.deliveryInfo.city}}
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+            <ion-col>
+              <ion-row class="ion-align-items-center">
+                <ion-col>
+                  <ion-fab-button [color]="order.data.paymentStatus == 'paid' ? 'success': 'danger'" size="small">
+                    <ion-icon
+                      [name]="order.data.paymentStatus == 'paid' ? 'checkmark-sharp': 'ellipsis-horizontal-outline'"></ion-icon>
+
+                  </ion-fab-button>
+                </ion-col>
+                <ion-col>
+                  <ion-text color="success" *ngIf="order.data.paymentStatus == 'paid'">
+                    Paid
+                  </ion-text>
+                  <ion-text color="danger" *ngIf="order.data.paymentStatus != 'paid'">
+                    On Delivery
+                  </ion-text>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+
+
+  </div>
+
+</ion-content>

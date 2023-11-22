@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import {  Router } from '@angular/router';
+import {  Router, RouterStateSnapshot } from '@angular/router';
 import { map, Observable, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
 

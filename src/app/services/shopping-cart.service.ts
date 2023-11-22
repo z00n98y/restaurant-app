@@ -37,29 +37,18 @@ export class ShoppingCartService {
     this.db.object('/' + location + '/' + resourceId).remove();
   }
 
-  getCart2(): Observable<any> {
-    let cartId = this.getOrCreateCartId2()
+  getCart(): Observable<any> {
+    let cartId = this.getOrCreateCartId()
     return this.db.object('/shopping-carts/' + cartId).valueChanges();
   }
-  async getCart(): Promise<AngularFireObject<ShoppingCart>>{
-    let cartId = await this.getOrCreateCartId()
-    return this.db.object('/shopping-carts/' + cartId);
-  }
 
-  private async getOrCreateCartId() {
+
+  public getOrCreateCartId() {
     let cartId = localStorage.getItem('cartId');
     if (cartId) return cartId;
 
-    let result = await this.create("shopping-carts", { date: new Date().getTime() })
-    localStorage.setItem('cartId', result.key || '');
-    return result.key;
-  }
-
-  public getOrCreateCartId2() {
-    let cartId = localStorage.getItem('cartId');
-    if (cartId) return cartId;
-
-    let result = this.create("shopping-carts", { date: new Date().getTime() })
+    console.log(cartId)
+    let result = this.create("shopping-carts", { date: new Date().getTime(), items: [] })
     localStorage.setItem('cartId', result.key || '');
     return result.key;
   }
@@ -81,14 +70,14 @@ export class ShoppingCartService {
         let savedItem = item.payload.val() as ShoppingCartItem;
         this.update('shopping-carts/' + cartId + '/items/' + product.key,
           {
-            product: { key: product.key, data: product.payload.val() },
+            product: { key: product.key, data: product.data },
             quantity: (savedItem.quantity || 0) + change
           })
       }
       else {
         this.setObject('shopping-carts/' + cartId + '/items/' + product.key,
           {
-            product: { key: product.key, data: product.payload.val() },
+            product: { key: product.key, data: product.data },
             quantity: 1
           })
       }

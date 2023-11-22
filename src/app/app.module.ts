@@ -21,12 +21,14 @@ import { HomeComponent } from './home/home.component';
 import { ProductsFormComponent } from './admin/products-form/products-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoriesComponent } from './categories/categories.component';
-import { ProductCardComponent } from './product-card/product-card.component';
+import { ProductCardComponent } from './products-catalog/product-card/product-card.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { LoginComponent } from './login/login.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
-import { PaymentComponent } from './payment/payment.component';
+import { PaymentComponent } from './order-info/payment/payment.component';
 import { authGuard } from './services/admin-auth-guard.service';
+import { ModifyQuantityComponent } from './products-catalog/modify-quantity/modify-quantity.component';
+import { OrdersComponent } from './order-info/orders/orders.component';
 
 
 @NgModule({
@@ -40,8 +42,10 @@ import { authGuard } from './services/admin-auth-guard.service';
     ShoppingCartComponent,
     ProductCardComponent,
     AdminDashboardComponent,
+    ModifyQuantityComponent,
     LoginComponent,
-    PaymentComponent
+    PaymentComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +66,8 @@ import { authGuard } from './services/admin-auth-guard.service';
       { path: 'admin/products', component: AdminProductsComponent, canActivate: [authGuard] },
       { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [authGuard]},
       { path: 'checkout', component: PaymentComponent},
+      { path: 'orders/:id', component: PaymentComponent},
+      { path: 'orders', component: OrdersComponent, canActivate: [authGuard]},
     ]),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideDatabase(() => getDatabase())

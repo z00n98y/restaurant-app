@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ShoppingCartService } from '../services/shopping-cart.service';
-import { Observable } from 'rxjs';
 import { ShoppingCart } from '../models/shopping-cart';
-import { ShoppingCartItem } from '../models/product';
+import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-shopping-cart',
@@ -10,14 +11,19 @@ import { ShoppingCartItem } from '../models/product';
   styleUrls: ['./shopping-cart.component.scss'],
 })
 export class ShoppingCartComponent  {
-  shoppingCart: ShoppingCart;
+  paymentOption: 'onDelivery' | 'creditCard' = 'creditCard';
+  shoppingCart: any;
   totalItems: number = 0;
 
-  constructor(private shoppingCartService: ShoppingCartService) { 
-    this.shoppingCartService.getCart2()
+  constructor(private shoppingCartService: ShoppingCartService, private router: Router) { 
+    this.shoppingCartService.getCart()
     .subscribe (value => {
       this.shoppingCart = new ShoppingCart(value.items);
     })
+  }
+
+  proceedtoCheckout() {
+    this.router.navigate(['checkout']);
   }
 
 }

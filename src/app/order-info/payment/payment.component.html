@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button icon="caret-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Checkout</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-justify-content-center">
+  <div class="payment-element">
+    <form #f="ngForm">
+      <div> Delivery info:
+        <div class="form-group card-area">
+
+          <ion-input class="text-style" #name="ngModel" [(ngModel)]="deliveryInformation.name" name="name" id="name"
+            type="name" class="form-control" required label-placement="floating" label="Name">
+          </ion-input>
+
+
+          <ion-input class="text-style" #streetNumber="ngModel" [(ngModel)]="deliveryInformation.streetNumber"
+            name="streetNumber" id="streetNumber" type="streetNumber" class="form-control" required
+            label-placement="floating" label="Street Number:" pattern="[a-zA-Z\/0-9 ]*">
+          </ion-input>
+          <div slot="label" *ngIf="streetNumber.errors?.['pattern']">
+            <ion-text color="danger">Invalid street number</ion-text>
+          </div>
+
+          <ion-input class="text-style" #streetName="ngModel" [(ngModel)]="deliveryInformation.streetName"
+            name="streetName" id="streetName" type="streetName" class="form-control" required label-placement="floating"
+            label="Street Name:" pattern="[a-zA-Z ]*">
+
+          </ion-input>
+          <div slot="label" *ngIf="streetName.errors?.['pattern']">
+            <ion-text color="danger">Invalid street name</ion-text>
+          </div>
+
+          <ion-input class="text-style" #postalCode="ngModel" [(ngModel)]="deliveryInformation.postalCode"
+            name="postalCode" id="postalCode" type="postalCode" class="form-control" required label-placement="floating"
+            label="Postal code:" pattern="[0-9]{4}">
+
+          </ion-input>
+          <div *ngIf="postalCode.touched && postalCode.invalid">
+            <div slot="label" *ngIf="postalCode.errors?.['pattern']">
+              <ion-text color="danger">Invalid postal code</ion-text>
+            </div>
+          </div>
+
+          <ion-input class="text-style" #city="ngModel" [(ngModel)]="deliveryInformation.city" name="city" id="city"
+            type="city" class="form-control" required label-placement="floating" label="City" readonly>
+
+          </ion-input>
+        </div>
+
+        <br>
+      </div>
+
+
+
+      <div>Payment details:
+        <div class="card-area" ngxStripeCardGroup [formGroup]="stripeTest" [elementsOptions]="elementsOptions">
+          <ngx-stripe-card-number [options]="cardOptions"></ngx-stripe-card-number>
+          <ngx-stripe-card-expiry [options]="cardOptions"></ngx-stripe-card-expiry>
+          <ngx-stripe-card-cvc [options]="cardOptions"></ngx-stripe-card-cvc>
+        </div>
+      </div>
+
+      <ion-button [disabled]="(!appUser || appUser.userRole !== 'admin') || f.invalid" (click)="pay(f.value)"
+        [color]="paymentStatus.color" shape="round">
+        <ion-icon name="checkmark-circle"></ion-icon>
+        {{paymentStatus.text}}
+      </ion-button>
+
+
+    </form>
+  </div>
+
+
+</ion-content>
